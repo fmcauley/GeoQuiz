@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         nextButton.setOnClickListener {
-            currentIndex = (currentIndex + 1 ) % questionBank.size
+            currentIndex = (currentIndex + 1 ) % questionBank.size //this is an interesting way to cycle a list
             updateQuestion()
         }
 
