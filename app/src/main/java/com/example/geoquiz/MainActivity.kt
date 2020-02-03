@@ -31,6 +31,11 @@ class MainActivity : AppCompatActivity() {
         nextButton = findViewById(R.id.next_button)
         questionTextView = findViewById(R.id.question_text_view)
 
+        questionTextView.setOnClickListener {
+            updateCurrentIndex()
+            updateQuestion()
+        }
+
         trueButton.setOnClickListener {
             checkAnswer(true)
         }
@@ -40,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         nextButton.setOnClickListener {
-            currentIndex = (currentIndex + 1 ) % questionBank.size //this is an interesting way to cycle a list
+            updateCurrentIndex()
             updateQuestion()
         }
 
@@ -50,6 +55,10 @@ class MainActivity : AppCompatActivity() {
     private fun updateQuestion() {
         val questionTextResId = questionBank[currentIndex].textResId
         questionTextView.setText(questionTextResId)
+    }
+
+    private fun updateCurrentIndex() {
+        currentIndex = (currentIndex + 1 ) % questionBank.size
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
