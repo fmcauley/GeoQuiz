@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         prevButton.setOnClickListener {
-            moveBackCurrentIndex()
+            moveBackOnePosition()
             updateQuestion()
         }
 
@@ -69,8 +69,11 @@ class MainActivity : AppCompatActivity() {
         currentIndex = (currentIndex + 1 ) % questionBank.size
     }
 
-    private fun moveBackCurrentIndex() {
-       currentIndex = questionBank.lastIndex % questionBank.size
+    private fun moveBackOnePosition() {
+       when(currentIndex) {
+           0 -> currentIndex = 0
+           else -> currentIndex -= 1
+       }
     }
 
 
