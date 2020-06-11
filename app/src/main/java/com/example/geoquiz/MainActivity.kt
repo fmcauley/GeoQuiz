@@ -68,7 +68,6 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         Log.d(TAG, "onStart() called")
     }
-
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume() called")
@@ -77,12 +76,10 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         Log.d(TAG, "onPause() called")
     }
-
     override fun onStop() {
         super.onStop()
         Log.d(TAG, "onStop() called")
     }
-
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy() called")
@@ -95,6 +92,8 @@ class MainActivity : AppCompatActivity() {
     private fun updateQuestion() {
         val questionTextResId = questionBank[currentIndex].textResId
         questionTextView.setText(questionTextResId)
+        trueButton.isEnabled = true
+        falseButton.isEnabled = true
     }
 
     private fun updateCurrentIndex() {
@@ -110,12 +109,16 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun checkAnswer(userAnswer: Boolean) {
+        // find a way to track the answer and get the percentage to display in a toast
+
         val correctAnswer = questionBank[currentIndex].answer
         val messageResId = if (userAnswer == correctAnswer) {
             R.string.correct_toast
         } else {
             R.string.incorrect_toast
         }
+        trueButton.isEnabled = false
+        falseButton.isEnabled = false
 
         Toast.makeText(this,messageResId, Toast.LENGTH_SHORT).show()
     }
