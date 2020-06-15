@@ -8,11 +8,15 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import kotlin.math.roundToInt
 
 private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
 
+    private  var score = 0
     private lateinit var trueButton: Button
     private lateinit var falseButton: Button
     private lateinit var nextButton: ImageButton
@@ -32,6 +36,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate(Bundle?) called")
         setContentView(R.layout.activity_main)
+        val provider = ViewModelProvider(this)
+        val quizViewModel = provider.get(QuizViewModel::class.java)
+        Log.d(TAG,"Got a QuizViewModel: $quizViewModel")
         trueButton = findViewById(R.id.true_button)
         falseButton = findViewById(R.id.false_button)
         nextButton = findViewById(R.id.next_button)
@@ -98,6 +105,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateCurrentIndex() {
         currentIndex = (currentIndex + 1 ) % questionBank.size
+        if (currentIndex == 5) {
+            var scoreF : Float = score.toFloat()
+            var currentIndexF : Float = currentIndex.toFloat()
+            score = 0 //reset
+            val finalScore = ((scoreF/currentIndexF) * 100).roundToInt()
+
+           Toast.makeText(this,"Your Score is: $finalScore", Toast.LENGTH_LONG)
+               .show()
+        }
     }
 
     private fun moveBackOnePosition() {
@@ -109,8 +125,6 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun checkAnswer(userAnswer: Boolean) {
-        // find a way to track the answer and get the percentage to display in a toast
-
         val correctAnswer = questionBank[currentIndex].answer
         val messageResId = if (userAnswer == correctAnswer) {
             R.string.correct_toast
@@ -121,7 +135,9 @@ class MainActivity : AppCompatActivity() {
         falseButton.isEnabled = false
 
         Toast.makeText(this,messageResId, Toast.LENGTH_SHORT).show()
+
+        if (userAnswer == correctAnswer) {
+            score += 1
+        }
     }
 }
-
-// These are event driven applications.
